@@ -1,37 +1,45 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../server_handler.dart';
+import './seller_screen.dart';
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({Key? key}) : super(key: key);
+
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
   bool showLoadingSellers = false;
-  dynamic _timer;
+  dynamic? _timer;
+
+  void getSellers() {
+    ServerHandler()
+        .getSellers()
+        .then((value) => Navigator.of(context).popAndPushNamed(SellerScreen.routeName,arguments: value))
+        .catchError((e) => print(e));
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    //Initializing Timer
-
     _timer = Timer(
         Duration(seconds: 3),
-        () => {
-              showLoadingSellers = true,
-              setState(() {}),
-            });
+            () => {
+          showLoadingSellers = true,
+          setState(() {}),
+          getSellers(),
+        });
   }
 
   @override
   void dispose() {
-    //Disposing the Timer
-    _timer.cancal();
+    // TODO: implement dispose
     super.dispose();
+    _timer.close();
   }
 
   @override
@@ -39,26 +47,20 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
-        color: const Color(0xffE6F3EC),
+        color: const Color(0xffe6f3ec),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            //Title of Splash Screen
-            Text(
-              'Better Buys',
-              style: GoogleFonts.pacifico(
-                color: const Color(0xff4E8489),
-                fontSize: 30,
-              ),
-            ),
-            //LoadingAnimation
+            Text('Better Buy-s',
+                style: GoogleFonts.pacifico(
+                    color: const Color(0xff4e8489), fontSize: 27)),
             if (showLoadingSellers)
-              SizedBox(
+              const SizedBox(
                 height: 20.0,
                 width: 20.0,
                 child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Color(0xff4E8489)),
-                  strokeWidth: 1.5,
+                  valueColor: AlwaysStoppedAnimation<Color>(Color(0xff4e8489)),
+                  strokeWidth: 1.9,
                 ),
               ),
             if (showLoadingSellers)
@@ -68,7 +70,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   'Loading Sellers',
                   style: GoogleFonts.poppins(),
                 ),
-              ),
+              )
           ],
         ),
       ),
