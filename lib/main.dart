@@ -1,6 +1,9 @@
+
 import 'package:flutter/material.dart';
 import 'screens/splash_screen.dart';
+
 import 'package:better_buyers/screens/seller_screen.dart';
+import 'package:better_buyers/screens/product_screen.dart';
 
 void main() =>  runApp(const MyApp());
 
@@ -21,6 +24,7 @@ class MyApp extends StatelessWidget {
       home:SplashScreen(),
       routes: {
         SellerScreen.routeName:(_) => SellerScreen(),
+        ProductScreen.routeName:(_) => ProductScreen(),
       },
     );
   }
